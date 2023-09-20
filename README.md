@@ -1,4 +1,4 @@
-# This is the template code for the LLM Efficiency Challenge 2023 submission.
+# Template for the LLM Efficiency Challenge 2023 submission.
 
 For more details of the challenge, please refer to the [challenge website](https://llm-efficiency-challenge.github.io/).
 
