@@ -1,8 +1,10 @@
 import logging
+import torch
 
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
+    BitsAndBytesConfig
 )
 
 from fastapi import FastAPI
@@ -23,8 +25,16 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
-model = AutoModelForCausalLM.from_pretrained("./models/test")  # TODO: Change this to your model path
-tokenizer = AutoTokenizer.from_pretrained("gpt2")  # TODO: Change this to your tokenizer path
+base_model_id = "mistralai/Mistral-7B-v0.1"
+bnb_config = BitsAndBytesConfig(
+    load_in_4bit=True,
+    bnb_4bit_use_double_quant=True,
+    bnb_4bit_quant_type="nf4",
+    bnb_4bit_compute_dtype=torch.bfloat16
+)
+
+model = AutoModelForCausalLM.from_pretrained(base_model_id, quantization_config=bnb_config)
+tokenizer = AutoTokenizer.from_pretrained(base_model_id)  # TODO: Change this to your tokenizer path
 
 
 @app.post("/process")
