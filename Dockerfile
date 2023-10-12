@@ -15,10 +15,10 @@ RUN pip install --no-cache-dir --upgrade -r fast_api_requirements.txt
 
 # Install any needed packages specified in requirements.txt that come from lit-gpt
 RUN apt-get update && apt-get install -y git
-RUN pip install huggingface_hub sentencepiece transformers
+RUN pip install huggingface_hub sentencepiece transformers bitsandbytes accelerate scipy
 
 # Load the model and save it to the container
-RUN python scripts/load_and_save_model.py
+# RUN python scripts/load_and_save_model.py
 
 # Run the server
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]

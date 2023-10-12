@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
-base_model_id = "mistralai/Mistral-7B-v0.1"
+base_model_id = "mistralai/Mistral-7B-Instruct-v0.1"
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=True,
     bnb_4bit_use_double_quant=True,
