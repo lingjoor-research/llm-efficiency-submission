@@ -1,9 +1,12 @@
 import logging
+import torch 
 
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
 )
+
+from peft import AutoPeftModelForCausalLM
 
 from fastapi import FastAPI
 from api import (
@@ -23,7 +26,7 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
-model = AutoModelForCausalLM.from_pretrained("./models/test")  # TODO: Change this to your model path
+model = AutoPeftModelForCausalLM.from_pretrained("./models/platypus/model-with-data-batch-13")  # TODO: Change this to your model path
 tokenizer = AutoTokenizer.from_pretrained("gpt2")  # TODO: Change this to your tokenizer path
 
 
