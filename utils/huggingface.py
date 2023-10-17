@@ -23,12 +23,14 @@ def tokenize_api(
     
     t0 = time.perf_counter()
     
-    idx = tokenizer.encode(input)
+    encoded = tokenizer(
+        input
+    )
     
     t = time.perf_counter() - t0
     
     return TokenizeResponse(
-        tokens=idx,
+        tokens=encoded["input_ids"],
         request_time=t,
     )
     
@@ -72,7 +74,7 @@ def generate(
     top_k: Optional[int] = None,
     eos_id: Optional[int] = None,
     echo_prompt: Optional[bool] = False,
-) -> Tuple[List[int], List[float], List[Tuple[int, float]]]:
+) -> Tuple:
     """
     Takes a conditioning sequence (prompt) as input and continues to generate as many tokens as requested.
 
@@ -93,64 +95,44 @@ def generate(
         selected token.
     """
     
-    tok_obj = tokenize_api(tokenizer, input)
-    idx = torch.tensor(tok_obj.tokens).to(model.device)
+    encoded = tokenizer(input, return_tensors="pt")
     
-    T = idx.size(0)
+    T = encoded["input_ids"][0].size(0)
     
     max_returned_tokens = T + max_new_tokens
     
     assert max_returned_tokens > T
-    device, dtype = idx.device, idx.dtype
     
-    # create an empty tensor of the expected final shape and fill in the current tokens
-    empty = torch.empty(max_returned_tokens, dtype=dtype, device=device)
-    empty[:T] = idx
-    idx = empty
-    input_pos = torch.arange(0, T, device=device)
-
-    top_logprob = []
-    logprob = []
-
-    for _ in range(max_returned_tokens - T):
-        # forward
-        logits = model(idx[:T])[0]
-        logits = logits[-1]  # take the logits of the last position only
-        
-        # scale by temperature
-        logits /= temperature
-        
-        # optionally crop probabilities to only the top k options
-        if top_k is not None:
-            v, _ = torch.topk(logits, min(top_k, logits.size(-1)))
-            logits = torch.where(logits < v[[-1]], -float("Inf"), logits)
-
-        probs = torch.nn.functional.softmax(logits, dim=-1)
-
-        idx_next = torch.multinomial(probs, num_samples=1).to(dtype=dtype)
-
-        # append the logprob of selected token
-        logprob.append(torch.log(probs[idx_next]).item())
-
-        # append th idx and logprob of top token
-        top_logprob.append((torch.argmax(probs).item(), torch.log(probs).max().item()))
-
-        # advance
-        input_pos = input_pos[-1:] + 1
-
-        # concatenate the new generation
-        idx = idx.index_copy(0, input_pos, idx_next)
-
-        # if <eos> token is triggered, return the output (stop generation)
-        if idx_next == eos_id:
-            return idx[:input_pos], logprob, top_logprob  # include the EOS token
-        
-    if echo_prompt is False:
-        output = tokenizer.decode(idx[T:])
+    encoded = {k: v.to(model.device) for k, v in encoded.items()}
+    
+    with torch.no_grad():
+        outputs = model.generate(
+            **encoded,
+            max_new_tokens=max_new_tokens,
+            do_sample=True,
+            temperature=temperature,
+            top_k=top_k,
+            return_dict_in_generate=True,
+            output_scores=True
+        )
+    
+    if not echo_prompt:
+        output = tokenizer.decode(outputs.sequences[0][T:], skip_special_tokens=True)
     else:
-        output = tokenizer.decode(idx)
+        output = tokenizer.decode(outputs.sequences[0], skip_special_tokens=True)
         
-    return idx, logprob, top_logprob, output
+    generated_tokens = []
+    log_probs = torch.log(torch.stack(outputs.scores, dim=1).softmax(-1))
+    
+    gen_sequences = outputs.sequences[:, encoded["input_ids"].shape[-1]:]
+    gen_logprobs = torch.gather(log_probs, 2, gen_sequences[:, :, None]).squeeze(-1)
+
+    top_indices = torch.argmax(log_probs, dim=-1)
+    top_logprobs = torch.gather(log_probs, 2, top_indices[:,:,None]).squeeze(-1)
+    top_indices = top_indices.tolist()[0]
+    top_logprobs = top_logprobs.tolist()[0]
+        
+    return gen_sequences, gen_logprobs, log_probs, top_indices, top_logprobs, output
 
 
 def generate_api(
@@ -188,7 +170,7 @@ def generate_api(
         
     t0 = time.perf_counter()
     
-    tokens, logprob, top_logprob, output = generate(
+    gen_sequences, gen_logprobs, log_probs, top_indices, top_logprobs, output = generate(
         model,
         tokenizer,
         input,
@@ -202,17 +184,22 @@ def generate_api(
     
     t = time.perf_counter() - t0
     
+    top_indices = torch.argmax(log_probs, dim=-1)
+    top_logprobs = torch.gather(log_probs, 2, top_indices[:,:,None]).squeeze(-1)
+    top_indices = top_indices.tolist()[0]
+    top_logprobs = top_logprobs.tolist()[0]
+    
     generated_tokens = []
-    for t, lp, tlp in zip(tokens, logprob, top_logprob):
+    for t, lp, tlp in zip(gen_sequences.tolist()[0], gen_logprobs.tolist()[0], zip(top_indices, top_logprobs)):
         idx, val = tlp
-        tok_str = tokenizer.decode([idx])
+        tok_str = tokenizer.decode(idx)
         token_tlp = {tok_str: val}
         generated_tokens.append(
             Token(text=tokenizer.decode(t), logprob=lp, top_logprob=token_tlp)
         )
 
-    logprobs_sum = sum(logprob)
+    logprob_sum = gen_logprobs.sum().item()
     
     return ProcessResponse(
-        text=output, tokens=generated_tokens, logprob=logprobs_sum, request_time=t
+        text=output, tokens=generated_tokens, logprob=logprob_sum, request_time=t
     )
