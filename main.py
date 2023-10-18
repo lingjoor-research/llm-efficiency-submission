@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
-base_model_id = "lingjoor/mistral-cc-lima-2epoch"
+base_model_id = "lingjoor/mistral-lima-48"
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 model = AutoModelForCausalLM.from_pretrained(base_model_id, torch_dtype=torch.float16).to(device)
