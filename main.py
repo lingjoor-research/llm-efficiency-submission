@@ -1,11 +1,7 @@
 import logging
 import torch
 
-from transformers import (
-    AutoModelForCausalLM,
-    AutoTokenizer,
-    BitsAndBytesConfig
-)
+from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 
 from fastapi import FastAPI
 from api import (
@@ -25,22 +21,23 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
-base_model_id = "mistralai/Mistral-7B-v0.1"
-bnb_config = BitsAndBytesConfig(
-    load_in_4bit=True,
-    bnb_4bit_use_double_quant=True,
-    bnb_4bit_quant_type="nf4",
-    bnb_4bit_compute_dtype=torch.bfloat16
-)
+base_model_id = "Qwen/Qwen-14B"
+device = "cuda" if torch.cuda.is_available() else "cpu"
 
-model = AutoModelForCausalLM.from_pretrained(base_model_id, quantization_config=bnb_config)
-tokenizer = AutoTokenizer.from_pretrained(base_model_id)  # TODO: Change this to your tokenizer path
+model = AutoModelForCausalLM.from_pretrained(
+    base_model_id, torch_dtype=torch.float16,
+    trust_remote_code=True
+).to(device)
+tokenizer = AutoTokenizer.from_pretrained(
+    base_model_id,
+    trust_remote_code=True
+)  # TODO: Change this to your tokenizer path
 
 
 @app.post("/process")
 async def process_request(input_data: ProcessRequest) -> ProcessResponse:
     return generate_api(
-        model=model, 
+        model=model,
         tokenizer=tokenizer,
         input=input_data.prompt,
         max_new_tokens=input_data.max_new_tokens,
@@ -48,7 +45,7 @@ async def process_request(input_data: ProcessRequest) -> ProcessResponse:
         top_k=input_data.top_k,
         seed=input_data.seed,
     )
-    
+
 
 @app.post("/tokenize")
 async def tokenize(input_data: TokenizeRequest) -> TokenizeResponse:
