@@ -37,7 +37,6 @@ tokenizer = AutoTokenizer.from_pretrained(
 )
 model.eval()
 
-
 @app.post("/process")
 async def process_request(input_data: ProcessRequest) -> ProcessResponse:
     return generate_api(
