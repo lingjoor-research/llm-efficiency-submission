@@ -23,7 +23,6 @@ logging.basicConfig(level=logging.INFO)
 
 base_model_id = "lingjoor/qwen-all-2ep"
 
-
 model = AutoModelForCausalLM.from_pretrained(
     base_model_id,
     torch_dtype=torch.bfloat16,
@@ -36,6 +35,7 @@ tokenizer = AutoTokenizer.from_pretrained(
     trust_remote_code=True,
 )
 model.eval()
+
 
 
 @app.post("/process")
