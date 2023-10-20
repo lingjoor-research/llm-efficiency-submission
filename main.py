@@ -21,14 +21,16 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
-base_model_id = "lingjoor/mistral-platypus-qg-mt-zero-ep2"
+base_model_id = "Qwen/Qwen-7B"
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 model = AutoModelForCausalLM.from_pretrained(
-    base_model_id, torch_dtype=torch.float16
+    base_model_id, torch_dtype=torch.float16,
+    trust_remote_code=True
 ).to(device)
 tokenizer = AutoTokenizer.from_pretrained(
-    base_model_id
+    base_model_id,
+    trust_remote_code=True
 )  # TODO: Change this to your tokenizer path
 
 
