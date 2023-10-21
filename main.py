@@ -1,6 +1,7 @@
 import logging
 import torch
 
+from peft import PeftModel
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 
 from fastapi import FastAPI
@@ -21,20 +22,31 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
-base_model_id = "lingjoor/qwen-platypus-qg-mt-zero-full-2ep"
-
+base_model_id = "mistralai/Mistral-7B-Instruct-v0.1"
+lora_weights = "lingjoor/Mistral-7B-Instruct-v0.1-Dolly-Longalpaca-Platypus_Quality-QLoRA"
 
 model = AutoModelForCausalLM.from_pretrained(
     base_model_id,
-    torch_dtype=torch.bfloat16,
-    trust_remote_code=True,
+    load_in_8bit=False,
+    torch_dtype=torch.float16,
     device_map="auto",
-    bf16=True,
+    offload_folder="offload", 
 )
+    
+model = PeftModel.from_pretrained(
+    model, 
+    lora_weights, 
+    torch_dtype=torch.float16,
+    device_map="auto",
+    offload_folder="offload", 
+)
+
 tokenizer = AutoTokenizer.from_pretrained(
     base_model_id,
     trust_remote_code=True,
 )
+
+model = model.merge_and_unload()
 model.eval()
 
 @app.post("/process")
