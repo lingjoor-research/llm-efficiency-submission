@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
-base_model_id = "lingjoor/qwen-mix-all-v2-2ep"
+base_model_id = "lingjoor/qwen-mix-all-v2-1ep"
 
 
 model = AutoModelForCausalLM.from_pretrained(
@@ -36,7 +36,6 @@ tokenizer = AutoTokenizer.from_pretrained(
     trust_remote_code=True,
 )
 model.eval()
-
 
 
 @app.post("/process")
