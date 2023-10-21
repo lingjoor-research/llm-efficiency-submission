@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
-base_model_id = "lingjoor/qwen-platypus-qg-mt-zero-full-2ep"
+base_model_id = "lingjoor/qwen-mix-all-v2-2ep"
 
 
 model = AutoModelForCausalLM.from_pretrained(
