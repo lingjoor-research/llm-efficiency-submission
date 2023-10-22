@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
-base_model_id = "mistralai/Mistral-7B-v0.1"
+base_model_id = "mistralai/Mistral-7B-Instruct-v0.1"
 lora_weights = "lingjoor/mistral-7b-Instruct-v0.1-neft-qlora"
 
 model = AutoModelForCausalLM.from_pretrained(
