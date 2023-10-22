@@ -6,3 +6,5 @@ transformers_stream_generator
 einops
 accelerate
 peft
+fastapi
+uvicorn
