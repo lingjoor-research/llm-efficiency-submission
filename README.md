@@ -1,10 +1,10 @@
 # LLM Efficiency Challenge 2023 submission for Lingjoor team.
 
-Thanks to the organizers for hosting this challenge. We have learned a lot from this challenge. We hope that we can participate in the next challenge.
+First of all, thanks to the organizers for hosting this challenge. We have learned a lot from this challenge. This repository contains our submission code for both track (4090, A100) which we use username `kunato` to submit.
 
 ## Our approach
 
-We believe that high-quality data is one of the keys to success in this challenge. For full details, please see [SOLUTION.md](SOLUTION.md).
+We believe that high-quality data is one of the keys to success in this challenge. For full details of our approach and how to reproduce our result, please see [SOLUTION.md](SOLUTION.md).
 
 ## Local evaluation
 
