@@ -15,12 +15,8 @@ RUN pip install --no-cache-dir --upgrade -r fast_api_requirements.txt
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 COPY ./utils/ /submission/utils/
-COPY ./scripts/ /submission/scripts/
 COPY ./main.py /submission/main.py
 COPY ./api.py /submission/api.py
-
-# Load the model and save it to the container
-# RUN python scripts/load_and_save_model.py
 
 # Run the server
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]

@@ -1,6 +1,7 @@
 transformers==4.34.0
 sentencepiece
 huggingface_hub
-einops 
-transformers_stream_generator
 tiktoken
+transformers_stream_generator
+einops
+accelerate

@@ -1,0 +1,84 @@
+base_model: Qwen/Qwen-14B
+base_model_config: Qwen/Qwen-14B
+model_type: AutoModelForCausalLM
+tokenizer_type: AutoTokenizer
+is_qwen: true
+
+trust_remote_code: true
+load_in_8bit: false
+load_in_4bit: true
+strict: false
+
+datasets:
+  - path: ../lingjoor-dataset/dolly_15k_with_score_top200.jsonl
+    type: alpaca
+  - path: ../lingjoor-dataset/guanaco_with_score_top200.jsonl
+    type: alpaca
+  - path: ../lingjoor-dataset/lima_20_percentile.jsonl
+    type: alpaca
+  - path: ../lingjoor-dataset/platypus_quality_gain_zero_top200.jsonl
+    type: alpaca
+
+
+dataset_prepared_path: last_run_prepared
+val_set_size: 0.01
+output_dir: ./results/lingjoor/qwen_mix_all_200_v2-1
+
+sequence_len: 2048
+sample_packing: false
+pad_to_sequence_len:
+
+noisy_embedding_alpha: false
+adapter: qlora
+lora_r: 8
+lora_alpha: 16
+lora_dropout: 0.05
+lora_target_modules:
+lora_target_linear: true
+lora_fan_in_fan_out:
+
+wandb_project: qwen-cc
+wandb_entity: lingjoor
+wandb_watch:
+wandb_run_id:
+wandb_log_model:
+
+gradient_accumulation_steps: 8 # 32?
+micro_batch_size: 1
+num_epochs: 1
+optimizer: adamw_torch
+lr_scheduler: cosine
+learning_rate: 0.0004 # or 0.0002 / 0.0001
+warmup_steps: 2
+weight_decay: 0.2
+adam_beta1: 0.9
+adam_beta2: 0.95
+adam_epsilon: 1.0e-08
+
+train_on_inputs: false
+group_by_length: false
+bf16: true
+fp16: false
+tf32: true
+
+gradient_checkpointing: true
+early_stopping_patience:
+resume_from_checkpoint:
+local_rank:
+logging_steps: 1
+xformers_attention:
+flash_attention: false
+
+eval_steps: 1000
+# eval_table_size: 5
+# eval_table_max_new_tokens: 128
+save_steps:
+debug:
+deepspeed:
+fsdp:
+fsdp_config:
+special_tokens:
+  bos_token: "<|im_start|>"
+  eos_token: "<|im_end|>"
+  unk_token: "<|extra_27|>"
+  pad_token: "<|extra_27|>"
