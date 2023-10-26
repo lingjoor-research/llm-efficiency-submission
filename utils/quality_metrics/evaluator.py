@@ -7,11 +7,11 @@ from datasets import Dataset
 from datasets import load_from_disk
 
 # import: in-house
-from utils import get_device
-from utils.quality_metrics import get_reward_score
-from utils.quality_metrics import get_neighbor_graph
-from utils.quality_metrics import get_knn_score
-from utils.quality_metrics import get_len
+from utils.device import get_device
+from utils.quality_metrics.reward_score import get_reward_score
+from utils.quality_metrics.knn6 import get_neighbor_graph
+from utils.quality_metrics.knn6 import get_knn_score
+from utils.quality_metrics.len import get_len
 
 
 def evaluator(

@@ -12,7 +12,7 @@ from transformers import AutoTokenizer
 from datasets import Dataset
 
 # import: in-house
-from utils import get_device
+from utils.device import get_device
 
 
 def get_rank_model(

@@ -130,7 +130,7 @@ def initiate_model_lora_merge(
 
 def merge_basic(model_path, lora_path, output_path, tokenizer_path=None):
     # scan for checkpoint folder in lora_path
-    path_checkpoint = glob(f"{lora_path}/*checkpoint*")
+    path_checkpoint = glob(f"{lora_path}/*checkpoint*")[0]
     
     config = PeftConfig.from_pretrained(lora_path)
     print(f"base_model_path: {model_path}")

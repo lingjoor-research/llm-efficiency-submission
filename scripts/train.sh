@@ -14,17 +14,17 @@ then
 fi
 
 # train the model
-ECHO "Training the model..."
+echo "Training the model..."
 accelerate launch -m axolotl.cli.train ../configs/qwen.yaml
-ECHO "Training done!"
+echo "Training done!"
 
 # merge lora weights
-ECHO "Merging lora weights..."
+echo "Merging lora weights..."
 python ../utils/merge_lora.py \
     --model_path "Qwen/Qwen-14B"  \
     --lora_path "./results/lingjoor/qwen_mix_all_200_v2-1"  \
     --output_path "./results/lingjoor/qwen_mix_all_200_v2-1-2"
-ECHO "Merging done!"
+echo "Merging done!"
 
 # upload to huggingface
 ECHO "Uploading to huggingface..."
