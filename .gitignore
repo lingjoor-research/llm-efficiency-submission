@@ -6,3 +6,4 @@ lingjoor-dataset/
 axolotl/
 
 .DS_Store
+.env
