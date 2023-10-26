@@ -1,12 +1,12 @@
-# Template for the LLM Efficiency Challenge 2023 submission.
+# LLM Efficiency Challenge 2023 submission for Lingjoor team.
 
-For more details of the challenge, please refer to the [challenge website](https://llm-efficiency-challenge.github.io/).
+Thanks to the organizers for hosting this challenge. We have learned a lot from this challenge. We hope that we can participate in the next challenge.
 
-## Evaluation
+## Our solution
 
-In this challenge, they use [HELM](https://crfm.stanford.edu/helm/) as the evaluator. Please run the following command to install HELM on your machine:
+We believe that high-quality data is one of the keys to success in this challenge. For full details, please see [SOLUTION.md](SOLUTION.md).
 
-### Local evaluation
+## Local evaluation
 
 Firstly, install HELM on your machine:
 
@@ -35,7 +35,7 @@ $ helm-server
 To submit the model to the challenge, please zip the whole directory using the following command:
 
 ```zsh
-$ zip -r submission.zip . -x "models/*" -x ".git/*"
+$ zip -r submission.zip . -x "models/*" -x ".git/*" -x "lingjoor-dataset/*"
 ```
 
 Then submit the `submission.zip` file to **eval-bot** in challenge's Discord server.
@@ -44,7 +44,7 @@ Then submit the `submission.zip` file to **eval-bot** in challenge's Discord ser
 
 This is **LingJoor** team, we are a team of 4 members as follows:
 
-- [Nut Chukamphaeng](https://github.com/nutorbit)
-- [Pakhapoom Sarapat](https://github.com/pakhapoom)
-- [Kunat Pipatanakul](https://github.com/kunato)
-- [Natapong Nitarach](https://github.com/nat-nischw)
+- [Nut Chukamphaeng](https://github.com/nutorbit) (discord's username: nutorbit)
+- [Pakhapoom Sarapat](https://github.com/pakhapoom) (discord's username: .phyme)
+- [Kunat Pipatanakul](https://github.com/kunato) (discord's username: kunato)
+- [Natapong Nitarach](https://github.com/nat-nischw) (discord's username: natv8)
