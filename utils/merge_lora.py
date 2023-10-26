@@ -129,10 +129,13 @@ def initiate_model_lora_merge(
 
 
 def merge_basic(model_path, lora_path, output_path, tokenizer_path=None):
+    # scan for checkpoint folder in lora_path
+    path_checkpoint = glob(f"{lora_path}/*checkpoint*")
+    
     config = PeftConfig.from_pretrained(lora_path)
     print(f"base_model_path: {model_path}")
     print(f"original_model_path: {config.base_model_name_or_path}")
-    print(f"peft_model_path: {lora_path}")
+    print(f"peft_model_path: {path_checkpoint}")
     print("start loading model")
     model = AutoModelForCausalLM.from_pretrained(
         model_path,
@@ -140,8 +143,8 @@ def merge_basic(model_path, lora_path, output_path, tokenizer_path=None):
         trust_remote_code=True,
     )
     print(f"loaded: {model_path}")
-    model = PeftModel.from_pretrained(model, lora_path)
-    print(f"peft loaded: {lora_path}")
+    model = PeftModel.from_pretrained(model, path_checkpoint)
+    print(f"peft loaded: {path_checkpoint}")
     model = model.merge_and_unload()
     model.to(torch.bfloat16)
     print("saving ...")

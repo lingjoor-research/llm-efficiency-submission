@@ -3,5 +3,6 @@ benchmark_output/
 prod_env/
 models/*/
 lingjoor-dataset/
+axolotl/
 
 .DS_Store

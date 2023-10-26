@@ -35,7 +35,7 @@ $ helm-server
 To submit the model to the challenge, please zip the whole directory using the following command:
 
 ```zsh
-$ zip -r submission.zip . -x "models/*" -x ".git/*" -x "lingjoor-dataset/*"
+$ zip -r submission.zip . -x "models/*" -x ".git/*" -x "lingjoor-dataset/*" -x "axolotl/*"
 ```
 
 Then submit the `submission.zip` file to **eval-bot** in challenge's Discord server.

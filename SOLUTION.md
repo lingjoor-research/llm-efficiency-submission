@@ -13,7 +13,11 @@ We believe that high-quality data is one of the keys to success in this challeng
 
 Inspired by [InstructMining](https://arxiv.org/abs/2307.06290) paper, we use this method to estimate the quality (estimated loss) of each data point. 
 
-...
+$$
+\log(L) \propto 1.0694 - 0.1498\text{Rew} + 8.257 * 10^{-5}\text{Len} - 0.9350\text{Knn}_6 + \epsilon
+$$
+
+Where Rew is the reward, Len is the length of the instruction, and Knn is the average distance to the 6 nearest neighbors. 
 
 ## Training
 
@@ -30,8 +34,9 @@ $ cd axolotl
 $ pip install packaging
 $ pip install -e '.[flash-attn,deepspeed]'
 $ pip install -U git+https://github.com/huggingface/peft.git
+$ pip install transformers_stream_generator
 
 # Train the model
-$ sh scripts/train.sh
+$ sh ../scripts/train.sh
 ```
 

@@ -10,13 +10,13 @@ load_in_4bit: true
 strict: false
 
 datasets:
-  - path: lingjoor-dataset/dolly_15k_with_score_top200.jsonl
+  - path: ../lingjoor-dataset/dolly_15k_with_score_top200.jsonl
     type: alpaca
-  - path: lingjoor-dataset/guanaco_with_score_top200.jsonl
+  - path: ../lingjoor-dataset/guanaco_with_score_top200.jsonl
     type: alpaca
-  - path: lingjoor-dataset/lima_20_percentile.jsonl
+  - path: ../lingjoor-dataset/lima_20_percentile.jsonl
     type: alpaca
-  - path: lingjoor-dataset/platypus_quality_gain_zero_top200.jsonl
+  - path: ../lingjoor-dataset/platypus_quality_gain_zero_top200.jsonl
     type: alpaca
 
 
