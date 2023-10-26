@@ -56,6 +56,9 @@ def data_loader(
         
     else:
         dataset = load_dataset(dataset_path, split="train")
+        
+        if dataset_name == "platypus":
+            dataset = dataset.filter(lambda x: x["data_source"] != "airoboros")
 
         if dataset_name == "guanoca":
             def process_row(batch):
