@@ -1,4 +1,4 @@
-# LLM Efficiency Challenge 2023 submission for Lingjoor team.
+# LLM Efficiency Challenge 2023 submission by Lingjoor team.
 
 First of all, thanks to the organizers for hosting this challenge. We have learned a lot from this challenge. This repository contains our submission code for both track (4090, A100), you can just submit the same code for both tracks.
 
