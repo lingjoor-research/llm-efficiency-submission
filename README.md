@@ -2,7 +2,7 @@
 
 Thanks to the organizers for hosting this challenge. We have learned a lot from this challenge. We hope that we can participate in the next challenge.
 
-## Our solution
+## Our approach
 
 We believe that high-quality data is one of the keys to success in this challenge. For full details, please see [SOLUTION.md](SOLUTION.md).
 
