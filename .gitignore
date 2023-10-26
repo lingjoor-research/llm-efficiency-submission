@@ -4,3 +4,4 @@ prod_env/
 models/*/
 
 .DS_Store
+.env
