@@ -30,6 +30,6 @@ echo "Merging done!"
 ECHO "Uploading to huggingface..."
 python ../utils/upload_to_hf.py \
     --folder_path "./results/lingjoor/qwen_mix_all_200_v2-1-2" \
-    --repo "lingjoor/qwen_mix_all_200_v2-1-2" \
+    --repo "lingjoor/qwen-mix-all-200-v2-1-2" \
     --token $TOKEN
 ECHO "Uploading done!"
