@@ -6,12 +6,10 @@ WORKDIR /src
 RUN apt-get update && apt-get install -y git
 
 COPY ./utils/ /src/utils
+COPY ./training_requirements.txt /src/training_requirements.txt
 
-COPY ./training_requirements.txt /src/requirements.txt
-
-RUN pip install --no-cache-dir --upgrade -r requirements.txt
-
-RUN python -m utils.data_pipeline.process
+# Install any needed packages specified in requirements.txt that come from lit-gpt
+RUN pip install --no-cache-dir --upgrade -r training_requirements.txt
 
 # Run the server
 CMD ["python", "-m", "utils.data_pipeline.process"]
