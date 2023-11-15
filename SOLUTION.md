@@ -27,7 +27,7 @@ Once we have the estimated loss of each data point, we select the top 200 data p
 
 ```zsh
 $ docker build -t data_selection_pipeline . -f Dockerfile.data
-$ docker run --gpus all data_selection_pipeline -v <path_to_save_data>:/src/datasets
+$ docker run -v <path_to_save_data>:/src/datasets --gpus all data_selection_pipeline 
 ```
 
 ## Training
