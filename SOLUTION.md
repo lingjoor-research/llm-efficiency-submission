@@ -26,7 +26,8 @@ Where $\text{Rew}$ is the reward score, $\text{Len}$ is the length of the respon
 Once we have the estimated loss of each data point, we select the top 200 data points from each dataset. Then, we merge all selected data points into one dataset which we already uploaded to HuggingFace Hub. You can download the dataset from [here](https://huggingface.co/datasets/lingjoor/lingjoor-dataset).
 
 ```zsh
-# HOW-TO-RUN will update later if organizers ask us to do so.
+$ docker build -t data_selection_pipeline . -f Dockerfile.data
+$ docker run --gpus all data_selection_pipeline -v <path_to_save_data>:/src/datasets
 ```
 
 ## Training
