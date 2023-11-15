@@ -23,20 +23,18 @@ def data_standardize(
 
     SELECTED_COLS = [
         prompt_key,
-        completion_key,
+        "response",
         input_key,
         "reward",
         "len",
         "knn_6",
         "expected_loss",
     ]
+    
     dataset = dataset.select_columns(SELECTED_COLS)
 
     if prompt_key != "instruction":
         dataset = dataset.rename_column(prompt_key, "instruction")
-
-    if completion_key != "response":
-        dataset = dataset.rename_column(completion_key, "response")
 
     if input_key != "input":
         dataset = dataset.rename_column(input_key, "input")

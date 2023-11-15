@@ -1,0 +1,26 @@
+FROM ghcr.io/pytorch/pytorch-nightly:b3874ab-cu11.8.0
+
+WORKDIR /src
+
+RUN apt-get update && \
+    apt-get install -y git git-lfs && \
+    git lfs install
+
+RUN git clone https://huggingface.co/datasets/lingjoor/lingjoor-dataset && \
+    git clone https://github.com/kunato/axolotl
+
+WORKDIR /src/axolotl
+
+RUN pip install packaging && \
+    pip install -e '.[deepspeed]' && \
+    pip install https://github.com/Dao-AILab/flash-attention/releases/download/v2.3.2/flash_attn-2.3.2+cu117torch2.0cxx11abiFALSE-cp310-cp310-linux_x86_64.whl && \
+    pip install -U git+https://github.com/huggingface/peft.git && \
+    pip install transformers_stream_generator
+
+COPY scripts/train.sh /src/scripts/
+COPY configs /src/configs/
+COPY utils/merge_lora.py /src/utils/merge_lora.py
+COPY utils/upload_to_hf.py /src/utils/upload_to_hf.py
+
+# Run the server
+CMD ["sh", "../scripts/train.sh"]

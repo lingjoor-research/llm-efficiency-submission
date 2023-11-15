@@ -34,7 +34,12 @@ for dataset_name, config in configs.items():
     )
 
     # standardize the dataset.
-    dataset = data_standardize(dataset)
+    dataset = data_standardize(
+        dataset, 
+        prompt_key=config["prompt_key"],
+        completion_key=config["completion_key"],
+        input_key=config["input_key"],
+    )
 
     # save the final dataset as `jsonl`.
     dataset.to_json(f"{DATA_OUTPUT_PATH}/{dataset_name}.jsonl")

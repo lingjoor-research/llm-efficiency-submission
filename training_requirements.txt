@@ -1,0 +1,12 @@
+transformers==4.34.0
+datasets
+sentencepiece
+sentence-transformers
+python-dotenv
+accelerate
+pynndescent
+
+huggingface_hub
+tiktoken
+transformers_stream_generator
+einops
