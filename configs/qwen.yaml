@@ -37,8 +37,8 @@ lora_target_modules:
 lora_target_linear: true
 lora_fan_in_fan_out:
 
-wandb_project: qwen-cc
-wandb_entity: lingjoor
+wandb_project:
+wandb_entity:
 wandb_watch:
 wandb_run_id:
 wandb_log_model:
