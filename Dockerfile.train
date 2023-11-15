@@ -15,7 +15,7 @@ WORKDIR /src/axolotl
 
 RUN pip install packaging && \
     pip install -e '.[deepspeed]' && \
-    pip install flash-attn==2.3.2 && \
+    pip install https://github.com/Dao-AILab/flash-attention/releases/download/v2.3.2/flash_attn-2.3.2+cu117torch2.0cxx11abiFALSE-cp310-cp310-linux_x86_64.whl && \
     pip install -U git+https://github.com/huggingface/peft.git && \
     pip install transformers_stream_generator
 
