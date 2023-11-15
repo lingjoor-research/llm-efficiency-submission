@@ -21,6 +21,7 @@ RUN pip install packaging && \
 
 COPY scripts/train.sh /src/scripts/
 COPY configs /src/configs/
-
+COPY utils/merge_lora.py /src/utils/merge_lora.py
+COPY utils/upload_to_hf.py /src/utils/upload_to_hf.py
 # Run the server
 CMD ["sh", "../scripts/train.sh", "-t", "$HK_TOKEN"]
