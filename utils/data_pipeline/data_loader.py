@@ -60,7 +60,7 @@ def data_loader(
         if dataset_name == "platypus":
             dataset = dataset.filter(lambda x: x["data_source"] != "airoboros")
 
-        if dataset_name == "guanoca":
+        if dataset_name == "guanaco":
             def process_row(batch):
                 instruction = []
                 response = []
@@ -92,12 +92,15 @@ def data_loader(
             }
         )
 
+    if completion_key != "response":
+        dataset = dataset.rename_column(completion_key, "response")
+
     # prepare input of a model.
     dataset = dataset.map(
         lambda x: {
             input_key: prompt_template.format(
                 x[prompt_key],
-                x[completion_key],
+                x["response"],
             )
         } 
     )
