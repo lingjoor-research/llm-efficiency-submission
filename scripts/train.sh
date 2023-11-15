@@ -14,9 +14,9 @@ python ../utils/merge_lora.py \
 echo "Merging done!"
 
 # upload to huggingface
-ECHO "Uploading to huggingface..."
+echo "Uploading to huggingface..."
 python ../utils/upload_to_hf.py \
     --folder_path "./results/lingjoor/qwen_mix_all_200_v2-1-2" \
     --repo "lingjoor/qwen-mix-all-200-v2-1-2-test" \
     --token "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"
-ECHO "Uploading done!"
+echo "Uploading done!"
