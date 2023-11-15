@@ -3,15 +3,23 @@ FROM ghcr.io/pytorch/pytorch-nightly:b3874ab-cu11.8.0
 # Set the working directory in the container to /src
 WORKDIR /src
 
-RUN apt-get update && apt-get install -y git
+RUN apt-get update && \
+    apt-get install -y git git-lfs && \
+    git lfs install
 
-COPY ./utils/ /src/utils
+RUN git clone https://huggingface.co/datasets/lingjoor/lingjoor-dataset && \
+    git clone https://github.com/kunato/axolotl
 
-COPY ./training_requirements.txt /src/requirements.txt
+WORKDIR /src/axolotl
 
-RUN pip install --no-cache-dir --upgrade -r requirements.txt
+RUN pip install packaging && \
+    pip install -e '.[deepspeed]' && \
+    pip install flash-attn==2.3.2 && \
+    pip install -U git+https://github.com/huggingface/peft.git && \
+    pip install transformers_stream_generator
 
-RUN python -m utils.data_pipeline.process
+COPY scripts/train.sh /src/scripts/
+COPY configs /src/configs/
 
 # Run the server
-CMD ["python", "-m", "utils.data_pipeline.process"]
+CMD ["sh", "../scripts/train.sh", "-t", "$YOUR_HUGGINGFACE_TOKEN"]
