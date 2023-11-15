@@ -1,7 +1,5 @@
 FROM ghcr.io/pytorch/pytorch-nightly:b3874ab-cu11.8.0
 
-ARG HK_TOKEN
-
 WORKDIR /src
 
 RUN apt-get update && \
@@ -23,5 +21,6 @@ COPY scripts/train.sh /src/scripts/
 COPY configs /src/configs/
 COPY utils/merge_lora.py /src/utils/merge_lora.py
 COPY utils/upload_to_hf.py /src/utils/upload_to_hf.py
+
 # Run the server
-CMD ["sh", "../scripts/train.sh", "-t", "$HK_TOKEN"]
+CMD ["sh", "../scripts/train.sh"]

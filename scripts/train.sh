@@ -1,18 +1,5 @@
 #!/bin/bash
 
-while getopts t: flag
-do
-    case "${flag}" in
-        t) TOKEN=${OPTARG};;
-    esac
-done
-
-if [ -z "$TOKEN" ]
-then
-    echo "Please provide a huggingface token"
-    exit 1
-fi
-
 # train the model
 echo "Training the model..."
 accelerate launch -m axolotl.cli.train ../configs/qwen.yaml
@@ -30,6 +17,6 @@ echo "Merging done!"
 ECHO "Uploading to huggingface..."
 python ../utils/upload_to_hf.py \
     --folder_path "./results/lingjoor/qwen_mix_all_200_v2-1-2" \
-    --repo "lingjoor/qwen-mix-all-200-v2-1-2" \
-    --token $TOKEN
+    --repo "lingjoor/qwen-mix-all-200-v2-1-2-test" \
+    --token "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"
 ECHO "Uploading done!"

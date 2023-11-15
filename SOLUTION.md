@@ -34,20 +34,8 @@ Once we have the estimated loss of each data point, we select the top 200 data p
 We use [Qwen 14B](https://huggingface.co/Qwen/Qwen-14B) as pre-trained model. Then, fine-tune it on our selected data. To fine-tune the model, please follow the instructions below:
 
 ```zsh
-# Download the dataset
-$ git lfs install # if you haven't installed it yet
-$ git clone https://huggingface.co/datasets/lingjoor/lingjoor-dataset  
-
-# Install trainer
-$ git clone https://github.com/kunato/axolotl
-$ cd axolotl
-$ pip install packaging
-$ pip install -e '.[flash-attn,deepspeed]'
-$ pip install -U git+https://github.com/huggingface/peft.git
-$ pip install transformers_stream_generator
-
-# Train the model
-$ sh ../scripts/train.sh -t $YOUR_HUGGINGFACE_TOKEN
+$ docker build -t training_pipeline . -f Dockerfile.train
+$ docker run --gpus all training_pipeline 
 ```
 
 The script will automatically upload the model to HuggingFace Hub. 
