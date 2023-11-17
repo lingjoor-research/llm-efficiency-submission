@@ -1,19 +1,18 @@
 import logging
+
 import torch
-
-from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
-
 from fastapi import FastAPI
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
 from api import (
+    DecodeRequest,
+    DecodeResponse,
     ProcessRequest,
     ProcessResponse,
     TokenizeRequest,
     TokenizeResponse,
-    DecodeRequest,
-    DecodeResponse,
 )
-from utils.huggingface import tokenize_api, decode_api, generate_api
-
+from utils.huggingface import decode_api, generate_api, tokenize_api
 
 app = FastAPI()
 
@@ -21,7 +20,7 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
-base_model_id = "lingjoor/qwen-mix-all-200-v2-1-2"
+base_model_id = "binaryaaron/neurips-lingjoor-qwen-mix-all-200-v2-1-2-test"
 
 
 model = AutoModelForCausalLM.from_pretrained(

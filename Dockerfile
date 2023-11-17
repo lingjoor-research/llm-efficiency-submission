@@ -6,8 +6,9 @@ WORKDIR /submission
 # Copy the current directory contents into the container at /submission
 COPY ./fast_api_requirements.txt /submission/fast_api_requirements.txt
 COPY ./requirements.txt /submission/requirements.txt
+COPY ./run_specs.conf /submission/
 
-RUN apt-get update && apt-get install -y git
+RUN apt-get update && apt-get install -y git wget curl
 # Setup server requriements
 RUN pip install --no-cache-dir --upgrade -r fast_api_requirements.txt
 
@@ -19,4 +20,5 @@ COPY ./main.py /submission/main.py
 COPY ./api.py /submission/api.py
 
 # Run the server
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
+# changed to port 8080 to make it work internally
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
