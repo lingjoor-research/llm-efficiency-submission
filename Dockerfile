@@ -13,7 +13,9 @@ RUN apt-get update && apt-get install -y git wget curl
 RUN pip install --no-cache-dir --upgrade -r fast_api_requirements.txt
 
 # Install any needed packages specified in requirements.txt that come from lit-gpt
-RUN pip install --no-cache-dir --upgrade -r requirements.txt
+RUN pip install --no-cache-dir --upgrade -r requirements.txt 
+# adding here to make it work more readily
+RUN pip install --no-cache-dir --upgrade crfm-helm 
 
 COPY ./utils/ /submission/utils/
 COPY ./main.py /submission/main.py
